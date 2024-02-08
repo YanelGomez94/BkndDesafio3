@@ -2,18 +2,18 @@
   "name": "backend-desafio-entregable-3",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "/src/app.js",
   "type": "module",
   "scripts": {
     "start": "node src/app.js"
   },
-  "keywords": [],
+  "keywords": [
+    "npm",
+    "Scripts"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.2"
-  },
-  "devDependencies": {
-    "nodemon": "^3.0.3"
   }
 }
