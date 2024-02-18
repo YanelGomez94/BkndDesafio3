@@ -35,9 +35,9 @@ export default class ProductManager {
     }
 
     addProduct = async(producto) => {
-        if (!producto.title || !producto.description || !producto.price || !producto.thumbnail || !producto.code || !producto.stock){
+        if (!producto.title || !producto.description || !producto.price || !producto.status || !producto.code || !producto.stock || !producto.category){
             console.log("ERROR: All fields are required")
-            return
+            return null
         }
         this.products = await this.getProducts()
         if(this.products.length === 0 )
@@ -47,12 +47,11 @@ export default class ProductManager {
         const existingCode = this.products.find(product => product.code === producto.code)
         if (existingCode) {
             console.log(`ERROR: Code ${producto.code} is already in use`)
-            return
+            return null
         }
         this.products.push(producto)
         const archivo = path.join(__dirname, this.path)
         await fs.promises.writeFile(archivo, JSON.stringify(this.products,null,'\t'))
-        console.log('Product added successfully')
     }
 
     updateProduct = async(id, producto) =>{
@@ -62,9 +61,9 @@ export default class ProductManager {
             this.products[index] = { ...this.products[index], ...producto };
             const archivo = path.join(__dirname, this.path)
             await fs.promises.writeFile(archivo, JSON.stringify(this.products,null,'\t'))
-            console.log('Product updated successfully')
         }else{
             console.log(`ERROR: Not Found. Can't update product with Id: ${id}`)
+            return null
         }
     }
 
@@ -77,9 +76,8 @@ export default class ProductManager {
     
             const archivo = path.join(__dirname, this.path)
             await fs.promises.writeFile(archivo, JSON.stringify(this.products,null,'\t'))
-            console.log('Product deleted successfully')
         }else{
-            console.log(`ERROR: Can't delete product with Id: ${id}`)
+            return nul
         }
     }
 }
