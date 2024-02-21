@@ -5,20 +5,21 @@ import ProductManager from '../src/ProductManager.js'
 const router = Router()
 const manager = new ProductManager('../src/productos.json')
 
-router.get('/',async(req,res)=>{
-    let {limit} = req.query
+router.get('/', async (req, res) => {
+    let { limit } = req.query;
     try {
-        const products = await manager.getProducts()
-        if(limit){
-            const limited = products.slice(0,limit)
-            res.send({limited})
-        }else{
-            res.send({products})
+        const products = await manager.getProducts();
+        if (limit) {
+            const limited = products.slice(0, parseInt(limit));
+            res.send({ products: limited });
+        } else {
+            res.send({ products });
         }
     } catch (error) {
-        res.status(400).send({status:"Error", error: "Failed to load products"})
+        res.status(400).send({ status: "Error", error: "Failed to load products: " + error.message });
     }
-})
+});
+
 
 router.get('/:pid', async(req,res)=>{
     try{

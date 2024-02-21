@@ -5,18 +5,30 @@ const router = Router()
 const manager = new CartManager('../src/carrito.json')
 
 
-router.get('/:cid', async (req,res)=>{
-    try{
-        let idCart = parseInt(req.params.cid)
-        const cart = await manager.getCartById(idCart)
-        if(cart !== null)
-            res.send(cart)
-        else
-            res.status(404).send({status:"Error", error: "Cart not found"})
-    }catch(error){
-        res.status(400).send({status:"Error", error: "Failed to shopping carts"})
+router.get('/:cid', async (req, res) => {
+    try {
+        const idCart = parseInt(req.params.cid);
+        
+        // Validar que idCart sea un número entero válido
+        if (isNaN(idCart)) {
+            return res.status(400).send({ status: "Error", error: "Invalid cart ID" });
+        }
+
+        const cart = await manager.getCartById(idCart);
+        
+        // Si el carrito no se encuentra, enviar una respuesta con código 404
+        if (cart === null) {
+            return res.status(404).send({ status: "Error", error: "Cart not found" });
+        }
+
+        // Enviar el carrito como respuesta
+        res.send(cart);
+    } catch (error) {
+        // En caso de cualquier otro error, enviar una respuesta con código 400
+        res.status(400).send({ status: "Error", error: "Failed to retrieve shopping cart" });
     }
-})
+});
+
 
 router.post('/', async(req,res)=>{
     try{
